@@ -13,7 +13,6 @@ class JsonFile:
             file_content = file.read()
             return json.loads(file_content)
 
-
     def get_translation_keys(self):
         content = self._read_json_file()
         for k1, v1 in content.items():

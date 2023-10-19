@@ -11,10 +11,6 @@ class Checker:
         self.translation_keys_freq = {}
         self.has_unused_keys = False
 
-        # Scan JSON and extract keys
-        self.json_file.get_translation_keys()
-        self.set_translation_keys_freq()
-
         # Set paths for all directories
         self.set_directories(directories_list)
 
@@ -50,15 +46,16 @@ class Checker:
                 self.has_unused_keys = True
                 print(f"Not used tag: {tag}")
 
-        # exit("Found unused translation keys!")
-
     # For debugging purposes
     def print_unknown_tags(self):
         for file, unknown_tag in self.unknown_tags:
             print(f"File: {file}, line {unknown_tag.get_line()}: unknown tag '{unknown_tag.get_text()}'")
 
-
     def run(self):
+        # Scan JSON and extract keys
+        self.json_file.get_translation_keys()
+        self.set_translation_keys_freq()
+
         self.parse_files()
         self.check_translation_tags()
         self.print_unused_translation_keys()
