@@ -3,15 +3,15 @@ from sys import exit
 import checker
 
 # First theme
-directories_paths = ["/home/pavel/dev/python/templates/theme/sections",
-                     "/home/pavel/dev/python/templates/theme/snippets"]
-locale_path = "/home/pavel/dev/python/templates/theme/locales/en.default.json"
+directories_paths = ["./theme/sections",
+                     "./theme/snippets"]
+locale_path = "./theme/locales/en.default.json"
 ch = checker.Checker(locale_path, directories_paths)
 
 # Second theme
-directories_paths2 = ["/home/pavel/dev/python/templates/theme2/sections",
-                     "/home/pavel/dev/python/templates/theme2/snippets"]
-locale_path2 = "/home/pavel/dev/python/templates/theme2/locales/en.default.json"
+directories_paths2 = ["./theme2/sections",
+                     "./theme2/snippets"]
+locale_path2 = "./theme2/locales/en.default.json"
 ch2 = checker.Checker(locale_path2, directories_paths2)
 
 for checker in [ch, ch2]:
