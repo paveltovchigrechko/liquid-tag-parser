@@ -28,6 +28,9 @@ class LiquidFile:
     def get_path(self):
         return self._path
 
+    def get_translation_tags(self):
+        return self.found_translation_tags
+
     def parse_translation_keys(self):
         with open(self._path) as file:
             for (line_num, line) in enumerate(file, start=1):
@@ -36,9 +39,6 @@ class LiquidFile:
                     translation_key = re.search(TRANSLATION_KEY_PATTERN, t_tag.group(0))
                     tag = TranslationTag(line_num, translation_key.group(0).strip("'"))
                     self.found_translation_tags.append(tag)
-
-    def get_translation_tags(self):
-        return self.found_translation_tags
 
     def print_translation_tags(self):
         if not self.found_translation_tags:

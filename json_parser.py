@@ -20,8 +20,14 @@ class JsonFile:
                 for k2, v2 in v1.items():
                     if type(v2) is dict:
                         for k3, v3 in v2.items():
-                            translation_key = ".".join([k1, k2, k3])
-                            self.translation_keys.add(translation_key)
+                            if type(v3) is dict:
+                                pass
+                                # for k4, v4 in v3.items():
+                                #     translation_key = ".".join([k1, k2, k3, k4])
+                                #     self.translation_keys.add(translation_key)
+                            else:
+                                translation_key = ".".join([k1, k2, k3])
+                                self.translation_keys.add(translation_key)
                     else:
                         translation_key = ".".join([k1, k2])
                         self.translation_keys.add(translation_key)

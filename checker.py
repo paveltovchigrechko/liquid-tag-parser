@@ -41,10 +41,12 @@ class Checker:
             return
 
         print(f"Locale JSON file: {self.json_file.get_path()}")
+        count = 1
         for tag, freq in self.translation_keys_freq.items():
             if freq == 0:
                 self.has_unused_keys = True
-                print(f"Not used tag: {tag}")
+                print(f"{count} Unused key: {tag}")
+                count += 1
 
     # For debugging purposes
     def print_unknown_tags(self):
