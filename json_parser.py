@@ -1,19 +1,26 @@
 import json
 
 class JsonFile:
-    def __init__(self, path):
+    """A class that represents the content of a JSON file with locale translations.
+    The JSON file can have up to 3 nested structures."""
+    def __init__(self, path: str):
         self._path = path
         self.translation_keys = set()
 
-    def get_path(self):
+    def get_path(self) -> str:
+        """Return the path to the JSON file."""
         return self._path
 
     def _read_json_file(self):
+        """Reads the content of a JSON file located in _path and deserializes its content."""
         with open(self._path) as file:
             file_content = file.read()
             return json.loads(file_content)
 
-    def get_translation_keys(self):
+    def scan_translation_keys(self):
+        """Scans the content of the JSON file up to the third nested structure and
+        combines translation keys in a 'general.section.parameter' format.
+        Adds all keys in translation_keys set."""
         content = self._read_json_file()
         for k1, v1 in content.items():
             if type(v1) is dict:
