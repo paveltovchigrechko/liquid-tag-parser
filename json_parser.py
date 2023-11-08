@@ -1,8 +1,10 @@
 import json
 
+
 class JsonFile:
     """A class that represents the content of a JSON file with locale translations.
     The JSON file can have up to 3 nested structures."""
+
     def __init__(self, path: str):
         self._path = path
         self.translation_keys = set()

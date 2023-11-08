@@ -1,9 +1,11 @@
 import json_parser
 import liquid_parser
 
+
 class Checker:
     """An abstract class that combines the JSON with source translation keys (JsonFile class)
     and directory with Liquid files (Dir class)."""
+
     def __init__(self, json_file_path, directories_list):
         self.json_file = json_parser.JsonFile(json_file_path)
         self.directories = []
