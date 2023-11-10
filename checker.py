@@ -33,10 +33,14 @@ class Checker:
             directory.process()
 
     def check_translation_tags(self):
-        """Populates the translation_keys_freq dictionary.
+        """Populates the 'translation_keys_freq' dictionary.
         For each directory checks each found translation key for each file and either
         increases its counter in translation_keys_freq (if the key is found) or
-        add it to unknown_tags list."""
+        add it to unknown_tags list.
+
+        After that, checks the translation_keys_freq dictionary for unused keys and
+        sets 'has_unused_keys' attribute.
+        """
         for directory in self.directories:
             for file in directory.parsed_liquid_files:
                 for translation_tag in file.found_translation_keys:
@@ -45,22 +49,25 @@ class Checker:
                     else:
                         self.unknown_tags.append((file.get_path(), translation_tag))
 
+        if 0 in self.translation_keys_freq.values():
+            self.has_unused_keys = True
+
     def print_unused_translation_keys(self):
         """Prints unused translation keys found in directories files."""
+        print(f"Locale JSON file: {self.json_file.get_path()}")
+
         if not self.translation_keys_freq:
             print("No translation keys found")
             return
 
-        print(f"Locale JSON file: {self.json_file.get_path()}")
-        count = 1
-        for tag, freq in self.translation_keys_freq.items():
-            if freq == 0:
-                print(f"{count} Unused key: {tag}")
-                count += 1
-        if count == 1:
-            print("Everything is OK, all keys are used.")
+        if self.has_unused_keys:
+            count = 1
+            for tag, freq in self.translation_keys_freq.items():
+                if freq == 0:
+                    print(f"{count} Unused key: {tag}")
+                    count += 1
         else:
-            self.has_unused_keys = True
+            print("Everything is OK, all keys are used.")
 
     # For debugging purposes
     def print_unknown_tags(self):
