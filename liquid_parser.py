@@ -14,12 +14,10 @@ class TranslationTag:
         self._line = line
         self._text = tag
 
-    @property
     def get_text(self) -> str:
         """Returns the text (aka translation key) passed into the tag."""
         return self._text
 
-    @property
     def get_line(self) -> int:
         """Returns the line in a file where the tag is located."""
         return self._line
@@ -35,12 +33,10 @@ class LiquidFile:
         self._path = path
         self.found_translation_keys = []
 
-    @property
     def get_path(self) -> str:
         """Returns the path to a Liquid file."""
         return self._path
 
-    @property
     def get_translation_keys(self) -> list:
         """Returns the list of translation keys found in the Liquid file."""
         return self.found_translation_keys

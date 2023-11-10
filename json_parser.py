@@ -9,7 +9,6 @@ class JsonFile:
         self._path = path
         self.translation_keys = set()
 
-    @property
     def get_path(self) -> str:
         """Return the path to the JSON file."""
         return self._path
