@@ -55,11 +55,12 @@ class Checker:
         count = 1
         for tag, freq in self.translation_keys_freq.items():
             if freq == 0:
-                self.has_unused_keys = True
                 print(f"{count} Unused key: {tag}")
                 count += 1
         if count == 1:
             print("Everything is OK, all keys are used.")
+        else:
+            self.has_unused_keys = True
 
     # For debugging purposes
     def print_unknown_tags(self):
