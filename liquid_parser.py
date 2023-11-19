@@ -85,7 +85,7 @@ class Dir:
             return
 
         for filename in self.filenames:
-            file = LiquidFile(filename)
+            file = LiquidFile(filename.resolve())
             file.parse_translation_keys()
             self.parsed_liquid_files.append(file)
 
