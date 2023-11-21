@@ -41,8 +41,10 @@ class Checker:
         After that, checks the translation_keys_freq dictionary for unused keys and
         sets 'has_unused_keys' attribute.
         """
+
+        #in general: think about how to decrease the complexity of this method and make it more readable
         for directory in self.directories:
-            for file in directory.parsed_liquid_files:
+            for file in directory.parsed_liquid_files: # so.. maybe it should be parameter of this method or class? I'd say weak coupling is better
                 for translation_tag in file.found_translation_keys:
                     if translation_tag.get_text() in self.json_file.translation_keys:
                         self.translation_keys_freq[translation_tag.get_text()] += 1
@@ -52,6 +54,7 @@ class Checker:
         if 0 in self.translation_keys_freq.values():
             self.has_unused_keys = True
 
+    #in general: don't print it here. just return tags to main and print there
     def print_unused_translation_keys(self):
         """Prints unused translation keys found in directories files."""
         print(f"Locale JSON file: {self.json_file.get_path()}")
@@ -78,12 +81,16 @@ class Checker:
         """General method that does all in one.
         Scans JSON keys, directory files, checks the key usage, and prints unused keys.
         """
+
+        #in general: maybe it shouldn't be here? What about to pass translation keys to run and remove json_file from this class?
         # Scan JSON and extract keys
-        self.json_file.scan_translation_keys()
-        self.set_translation_keys_freq()
+        self.json_file.scan_translation_keys()  #maybe return translation keys
+        self.set_translation_keys_freq() #private and pass translation keys?
 
         self.parse_files()
         self.check_translation_tags()
+
+        #in general: don't print it here. just return tags, etc.. to main and print there maybe create several methods.
         self.print_unused_translation_keys()
         # self.print_unknown_tags()
 

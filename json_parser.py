@@ -1,7 +1,7 @@
 import json
 
 
-class JsonFile:
+class JsonFile: #TranslationFile maybe?
     """A class that represents the content of a JSON file with locale translations.
     The JSON file can have up to 3 nested structures."""
 
@@ -15,21 +15,21 @@ class JsonFile:
 
     def _read_json_file(self):
         """Reads the content of a JSON file located in _path and deserializes its content."""
-        with open(self._path) as file:
+        with open(self._path) as file: #what if path doesn't exist?
             file_content = file.read()
             return json.loads(file_content)
 
-    def scan_translation_keys(self):
+    def scan_translation_keys(self): #in general, the more nested structures, the more complex the code
         """Scans the content of the JSON file up to the third nested structure and
         combines translation keys in a 'general.section.parameter' format.
         Adds all keys in translation_keys set."""
         content = self._read_json_file()
         for k1, v1 in content.items():
-            if type(v1) is dict:
+            if type(v1) is dict: #isinstance(v3, dict): and invert if maybe ?
                 for k2, v2 in v1.items():
-                    if type(v2) is dict:
+                    if type(v2) is dict: #isinstance(v3, dict): and invert if maybe ?
                         for k3, v3 in v2.items():
-                            if type(v3) is dict:
+                            if type(v3) is dict: #isinstance(v3, dict): and invert if maybe ?
                                 pass
                                 # for k4, v4 in v3.items():
                                 #     translation_key = ".".join([k1, k2, k3, k4])

@@ -22,7 +22,7 @@ class TranslationTag:
         """Returns the line in a file where the tag is located."""
         return self._line
 
-    def print_tag(self):
+    def print_tag(self): #what about def __str__(self):?
         """Prints the tag line and text."""
         print(f"Line {self._line}: {self._text}")
 
