@@ -15,15 +15,15 @@ class TranslationTag:
         self._text = tag
 
     def get_text(self) -> str:
-        """Returns the text (aka translation key) passed into the tag."""
+        """Return the text (aka translation key) passed into the tag."""
         return self._text
 
     def get_line(self) -> int:
-        """Returns the line in a file where the tag is located."""
+        """Return the line in a file where the tag is located."""
         return self._line
 
     def print_tag(self):
-        """Prints the tag line and text."""
+        """Print the tag line and text."""
         print(f"Line {self._line}: {self._text}")
 
 
@@ -34,16 +34,16 @@ class LiquidFile:
         self.found_translation_keys = []
 
     def get_path(self) -> str:
-        """Returns the path to a Liquid file."""
+        """Return the path to a Liquid file."""
         return self._path
 
     def get_translation_keys(self) -> list:
-        """Returns the list of translation keys found in the Liquid file."""
+        """Return the list of translation keys found in the Liquid file."""
         return self.found_translation_keys
 
     def parse_translation_keys(self):
-        """Opens a Liquid file by indicated path, searches for translation tags in
-        the file content, extracts translation keys passed in tags, and adds them in
+        """Open a Liquid file by indicated path, search for translation tags in
+        the file content, extract translation keys passed in tags, and add them in
         found_translation_keys list with their lines in file."""
         with open(self._path) as file:
             for (line_num, line) in enumerate(file, start=1):
@@ -54,7 +54,7 @@ class LiquidFile:
                     self.found_translation_keys.append(tag)
 
     def print_translation_keys(self):
-        """Prints all translation keys found in Liquid file.
+        """Print all translation keys found in Liquid file.
         Does nothing if the found_translation_keys list is empty."""
         if not self.found_translation_keys:
             return
@@ -72,15 +72,15 @@ class Dir:
         self.parsed_liquid_files = []
 
     def scan_filenames(self, extension=".liquid"):
-        """Scans all files recursively in directory path that have .liquid extension
+        """Scan all files recursively in directory path that have .liquid extension
         and adds them into filenames list."""
         path = Path(self.path).absolute()
         self.filenames = list(path.glob(f'**/*{extension}'))
 
     def parse_files(self):
-        """For each file in filenames list creates a new LiquidFile object, parses its
-        translation keys, and adds the object into parsed_liquid_files list.
-        Does nothing if filenames list is empty."""
+        """For each file in filenames list create a new LiquidFile object, parse its
+        translation keys, and add the object into parsed_liquid_files list.
+        Do nothing if filenames list is empty."""
         if not self.filenames:
             return
 

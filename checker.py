@@ -17,7 +17,7 @@ class Checker:
         self.set_directories(directories_list)
 
     def set_translation_keys_freq(self):
-        """Sets a dictionary with keys as string from JSON translation keys and values as 0.
+        """Set a dictionary with keys as string from JSON translation keys and values as 0.
         Represents how often is a key is encountered across the directory Liquid files."""
         self.translation_keys_freq = dict.fromkeys(self.json_file.translation_keys, 0)
 
@@ -28,17 +28,17 @@ class Checker:
             self.directories.append(directory)
 
     def parse_files(self):
-        """Runs the process method for each directory (Dir class) ."""
+        """Run the process method for each directory (Dir class) ."""
         for directory in self.directories:
             directory.process()
 
     def check_translation_tags(self):
-        """Populates the 'translation_keys_freq' dictionary.
-        For each directory checks each found translation key for each file and either
-        increases its counter in translation_keys_freq (if the key is found) or
+        """Populate the 'translation_keys_freq' dictionary.
+        For each directory check each found translation key for each file and either
+        increase its counter in translation_keys_freq (if the key is found) or
         add it to unknown_tags list.
 
-        After that, checks the translation_keys_freq dictionary for unused keys and
+        After that, check the translation_keys_freq dictionary for unused keys and
         sets 'has_unused_keys' attribute.
         """
         for directory in self.directories:
@@ -53,7 +53,7 @@ class Checker:
             self.has_unused_keys = True
 
     def print_unused_translation_keys(self):
-        """Prints unused translation keys found in directories files."""
+        """Print unused translation keys found in directories files."""
         print(f"Locale JSON file: {self.json_file.get_path()}")
 
         if not self.translation_keys_freq:
@@ -76,7 +76,7 @@ class Checker:
 
     def run(self):
         """General method that does all in one.
-        Scans JSON keys, directory files, checks the key usage, and prints unused keys.
+        Scan JSON keys, directory files, check the key usage, and print unused keys.
         """
         # Scan JSON and extract keys
         self.json_file.scan_translation_keys()
