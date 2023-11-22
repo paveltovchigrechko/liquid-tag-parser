@@ -45,13 +45,16 @@ class LiquidFile:
         """Open a Liquid file by indicated path, search for translation tags in
         the file content, extract translation keys passed in tags, and add them in
         found_translation_keys list with their lines in file."""
-        with open(self._path) as file:
-            for (line_num, line) in enumerate(file, start=1):
-                t_tag = re.search(TRANSLATION_TAG_PATTERN, line)
-                if t_tag:
-                    translation_key = re.search(TRANSLATION_KEY_PATTERN, t_tag.group(0))
-                    tag = TranslationTag(line_num, translation_key.group(0).strip("'"))
-                    self.found_translation_keys.append(tag)
+        try:
+            with open(self._path) as file:
+                for (line_num, line) in enumerate(file, start=1):
+                    t_tag = re.search(TRANSLATION_TAG_PATTERN, line)
+                    if t_tag:
+                        translation_key = re.search(TRANSLATION_KEY_PATTERN, t_tag.group(0))
+                        tag = TranslationTag(line_num, translation_key.group(0).strip("'"))
+                        self.found_translation_keys.append(tag)
+        except FileNotFoundError:
+            print(f"File {self._path} was not found.")
 
     def print_translation_keys(self):
         """Print all translation keys found in Liquid file.

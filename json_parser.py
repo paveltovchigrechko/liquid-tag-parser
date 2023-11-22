@@ -16,15 +16,22 @@ class JsonFile:
 
     def _read_json_file(self):
         """Read the content of a JSON file located in _path and deserializes its content."""
-        with open(self._path) as file:
-            file_content = file.read()
-            return json.loads(file_content)
+        try:
+            with open(self._path) as file:
+                file_content = file.read()
+                return json.loads(file_content)
+        except FileNotFoundError:
+            print(f"File {self._path} was not found.")
 
     def scan_translation_keys(self):
         """Scan the content of the JSON file up to the third nested structure and
         combines translation keys in a 'general.section.parameter' format.
         Adds all keys in translation_keys set."""
         content = self._read_json_file()
+        if not content:
+            print("Empty JSON or JSON was not found")
+            return
+
         for k1, v1 in content.items():
             if isinstance(v1, dict):
                 for k2, v2 in v1.items():
