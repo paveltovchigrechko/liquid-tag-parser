@@ -23,6 +23,31 @@ class JsonFile:
         except FileNotFoundError:
             print(f"File {self._path} was not found.")
 
+    def scan_translation_keys_02(self, *, max_level):
+        """Scan the content of the JSON file up to the max_level nested structure and
+        combines translation keys in a 'general.section.parameter' format.
+        Adds all keys in translation_keys set."""
+        content = self._read_json_file()
+        if not content:
+            return
+
+        self._scan_nested_dict(dict_=content, cur_level=1, max_level=max_level)
+
+    def _scan_nested_dict(self, *, dict_, cur_level, max_level, prefix=""):
+        """Recursive for scanning the nested dictionaries inside JSON"""
+        if cur_level > max_level:
+            return
+
+        for key, value in dict_.items():
+            if not prefix:
+                new_prefix = key
+            else:
+                new_prefix = prefix + "." + str(key)
+            if isinstance(value, dict):
+                self._scan_nested_dict(dict_=value, cur_level=cur_level+1, max_level=max_level, prefix=new_prefix)
+            else:
+                self.translation_keys.add(new_prefix)
+
     def scan_translation_keys(self):
         """Scan the content of the JSON file up to the third nested structure and
         combines translation keys in a 'general.section.parameter' format.
