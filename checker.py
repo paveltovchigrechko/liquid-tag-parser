@@ -10,6 +10,8 @@ class Checker:
         self.json_file = json_parser.JsonFile(json_file_path)
         self.directories = []
         self.unknown_tags = []
+        self.liquid_translation_keys = set()
+        self.unused_keys = set()
         self.translation_keys_freq = {}
         self.has_unused_keys = False
 
@@ -52,6 +54,18 @@ class Checker:
         if 0 in self.translation_keys_freq.values():
             self.has_unused_keys = True
 
+    def check_translation_tags_02(self):
+        for directory in self.directories:
+            for file in directory.parsed_liquid_files:
+                for tag in file.found_translation_keys:
+                    self.liquid_translation_keys.add(tag.get_text())
+        # print("Self liquid translation keys:")
+        # print(len(self.liquid_translation_keys))
+        # print(f"JSON keys: {len(self.json_file.translation_keys)}")
+        self.unused_keys = self.json_file.translation_keys.difference(self.liquid_translation_keys)
+        if self.unused_keys:
+            self.has_unused_keys = True
+
     def print_unused_translation_keys(self):
         """Print unused translation keys found in directories files."""
         print(f"Locale JSON file: {self.json_file.get_path()}")
@@ -69,6 +83,21 @@ class Checker:
         else:
             print("Everything is OK, all keys are used.")
 
+    def print_unused_translation_keys_02(self):
+        print(f"Locale JSON file: {self.json_file.get_path()}")
+
+        if not self.liquid_translation_keys:
+            print("No translation keys found")
+            return
+
+        if self.has_unused_keys:
+            count = 1
+            for unused_key in self.unused_keys:
+                print(f"{count} Unused key: {unused_key}")
+                count += 1
+        else:
+            print("Everything is OK, all keys are used.")
+
     # For debugging purposes
     def print_unknown_tags(self):
         for file, unknown_tag in self.unknown_tags:
@@ -80,11 +109,11 @@ class Checker:
         """
         # Scan JSON and extract keys
         self.json_file.scan_translation_keys(max_level=3)
-        self.set_translation_keys_freq()
+        # self.set_translation_keys_freq()
 
         self.parse_files()
-        self.check_translation_tags()
-        self.print_unused_translation_keys()
+        self.check_translation_tags_02()
+        self.print_unused_translation_keys_02()
         # self.print_unknown_tags()
 
 

@@ -31,13 +31,13 @@ class LiquidFile:
     """A class that represents a Liquid file."""
     def __init__(self, path):
         self._path = path
-        self.found_translation_keys = []
+        self.found_translation_keys = set()
 
     def get_path(self) -> str:
         """Return the path to a Liquid file."""
         return self._path
 
-    def get_translation_keys(self) -> list:
+    def get_translation_keys(self) -> set:
         """Return the list of translation keys found in the Liquid file."""
         return self.found_translation_keys
 
@@ -52,7 +52,7 @@ class LiquidFile:
                     if t_tag:
                         translation_key = re.search(TRANSLATION_KEY_PATTERN, t_tag.group(0))
                         tag = TranslationTag(line_num, translation_key.group(0).strip("'"))
-                        self.found_translation_keys.append(tag)
+                        self.found_translation_keys.add(tag)
         except FileNotFoundError:
             print(f"File {self._path} was not found.")
 
