@@ -22,9 +22,8 @@ class TranslationTag:
         """Return the line in a file where the tag is located."""
         return self._line
 
-    def print_tag(self):
-        """Print the tag line and text."""
-        print(f"Line {self._line}: {self._text}")
+    def __repr__(self):
+        print(f"Line: {self._line}: {self._text}")
 
 
 class LiquidFile:
@@ -64,7 +63,7 @@ class LiquidFile:
 
         print(f"File: {self._path}")
         for tag in self.found_translation_keys:
-            tag.print_tag()
+            print(tag)
 
 
 class Dir:
@@ -92,22 +91,11 @@ class Dir:
             file.parse_translation_keys()
             self.parsed_liquid_files.append(file)
 
-    # TODO: delete. For debugging purposes
-    def print_tags(self):
-        if not self.parsed_liquid_files:
-            return
-
-        for file in self.parsed_liquid_files:
-            if file.found_translation_keys:
-                file.print_translation_keys()
-                print("="*60)
-
     def process(self):
         """General method that consequently scans all Liquid files in the directory and
         parses their translation keys."""
         self.scan_filenames()
         self.parse_files()
-        # self.print_tags()
 
 
 if __name__ == "__main__":
