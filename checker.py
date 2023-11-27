@@ -79,7 +79,7 @@ class Checker:
         Scan JSON keys, directory files, check the key usage, and print unused keys.
         """
         # Scan JSON and extract keys
-        self.json_file.scan_translation_keys_02(max_level=3)
+        self.json_file.scan_translation_keys(max_level=3)
         self.set_translation_keys_freq()
 
         self.parse_files()
