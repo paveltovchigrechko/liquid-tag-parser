@@ -12,16 +12,10 @@ class Checker:
         self.unknown_tags = []
         self.liquid_translation_keys = set()
         self.unused_keys = set()
-        self.translation_keys_freq = {}
         self.has_unused_keys = False
 
         # Set paths for all directories
         self.set_directories(directories_list)
-
-    def set_translation_keys_freq(self):
-        """Set a dictionary with keys as string from JSON translation keys and values as 0.
-        Represents how often is a key is encountered across the directory Liquid files."""
-        self.translation_keys_freq = dict.fromkeys(self.json_file.translation_keys, 0)
 
     def set_directories(self, directory_paths):
         """Sets the directories with Liquid files."""
@@ -35,55 +29,16 @@ class Checker:
             directory.process()
 
     def check_translation_tags(self):
-        """Populate the 'translation_keys_freq' dictionary.
-        For each directory check each found translation key for each file and either
-        increase its counter in translation_keys_freq (if the key is found) or
-        add it to unknown_tags list.
-
-        After that, check the translation_keys_freq dictionary for unused keys and
-        sets 'has_unused_keys' attribute.
-        """
-        for directory in self.directories:
-            for file in directory.parsed_liquid_files:
-                for translation_tag in file.found_translation_keys:
-                    if translation_tag.get_text() in self.json_file.translation_keys:
-                        self.translation_keys_freq[translation_tag.get_text()] += 1
-                    else:
-                        self.unknown_tags.append((file.get_path(), translation_tag))
-
-        if 0 in self.translation_keys_freq.values():
-            self.has_unused_keys = True
-
-    def check_translation_tags_02(self):
         for directory in self.directories:
             for file in directory.parsed_liquid_files:
                 for tag in file.found_translation_keys:
                     self.liquid_translation_keys.add(tag.get_text())
-        # print("Self liquid translation keys:")
-        # print(len(self.liquid_translation_keys))
-        # print(f"JSON keys: {len(self.json_file.translation_keys)}")
+
         self.unused_keys = self.json_file.translation_keys.difference(self.liquid_translation_keys)
         if self.unused_keys:
             self.has_unused_keys = True
 
     def print_unused_translation_keys(self):
-        """Print unused translation keys found in directories files."""
-        print(f"Locale JSON file: {self.json_file.get_path()}")
-
-        if not self.translation_keys_freq:
-            print("No translation keys found")
-            return
-
-        if self.has_unused_keys:
-            count = 1
-            for tag, freq in self.translation_keys_freq.items():
-                if freq == 0:
-                    print(f"{count} Unused key: {tag}")
-                    count += 1
-        else:
-            print("Everything is OK, all keys are used.")
-
-    def print_unused_translation_keys_02(self):
         print(f"Locale JSON file: {self.json_file.get_path()}")
 
         if not self.liquid_translation_keys:
@@ -107,14 +62,10 @@ class Checker:
         """General method that does all in one.
         Scan JSON keys, directory files, check the key usage, and print unused keys.
         """
-        # Scan JSON and extract keys
         self.json_file.scan_translation_keys(max_level=3)
-        # self.set_translation_keys_freq()
-
         self.parse_files()
-        self.check_translation_tags_02()
-        self.print_unused_translation_keys_02()
-        # self.print_unknown_tags()
+        self.check_translation_tags()
+        self.print_unused_translation_keys()
 
 
 if __name__ == "__main__":
