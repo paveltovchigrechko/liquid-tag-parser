@@ -3,9 +3,9 @@ from sys import exit
 import checker
 
 # Initial setup
-directories_paths = ["./theme/sections",
-                     "./theme/snippets"]
-locale_path = "./theme/locales/en.default.json"
+directories_paths = ["./sections",
+                     "./snippets"]
+locale_path = "./locales/en.default.json"
 ch = checker.Checker(locale_path, directories_paths)
 
 ch.run()
